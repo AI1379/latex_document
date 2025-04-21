@@ -1,0 +1,41 @@
+# LaTeX auxiliary files
+*.aux
+*.bbl
+*.blg
+*.idx
+*.ind
+*.lof
+*.lot
+*.out
+*.toc
+*.acn
+*.acr
+*.alg
+*.glg
+*.glo
+*.gls
+*.ist
+*.fls
+*.fdb_latexmk
+
+# Compilation files
+*.dvi
+*.pdf
+*.ps
+*.synctex.gz
+
+# Navigation and animation files
+*.nav
+*.snm
+*.vrb
+
+# Temporary files
+*~
+*.bak
+*.tmp
+
+# Directories that might contain build artifacts
+_build/
+build/
+
+.venv/
