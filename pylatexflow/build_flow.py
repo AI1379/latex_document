@@ -38,6 +38,7 @@ class LaTeXBuildError(Exception):
 class LaTeXBuilder:
     def __init__(self, config: BuildFlowConfig):
         self.config = config
+        self.flow = []
 
     def _check_bib(self, aux_file: str):
         bib_tag = ["\\bibdata", "\\addbibresource", "\\citation"]
@@ -49,6 +50,7 @@ class LaTeXBuilder:
             return False
 
     def build(self):
+        self.flow = []
         if not os.path.isdir(self.config.output_dir):
             os.makedirs(self.config.output_dir, exist_ok=True)
         max_rounds = 20
@@ -71,6 +73,7 @@ class LaTeXBuilder:
                     f"-output-directory={self.config.output_dir}",
                 ] + self.config.build_args
             print(f"Round {i+1}: Running {build_command} ...")
+            self.flow.append(build_command)
             if not os.path.isfile(tex_file):
                 raise FileNotFoundError(f"TeX file '{tex_file}' not found.")
 
@@ -88,3 +91,9 @@ class LaTeXBuilder:
                     break
                 prev_aux = aux
             build_bib = self._check_bib(aux_file)
+
+    def get_flow(self):
+        """
+        Returns the build flow as a list of commands.
+        """
+        return self.flow
