@@ -58,7 +58,7 @@ class LaTeXBuilder:
             os.makedirs(self.config.output_dir, exist_ok=True)
         max_rounds = 20
         tex_name = f"{self.config.base_name}.tex"
-        aux_name = f"{self.config.base_name}.aux"
+        aux_name = f"{self.config.output}.aux"
         tex_file = os.path.join(self.config.directory, tex_name)
         aux_file = os.path.join(self.config.output_dir, aux_name)
         prev_aux = ""
