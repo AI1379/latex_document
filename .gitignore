@@ -19,7 +19,6 @@
 *.fdb_latexmk
 
 **/env.tex
-env.json
 
 # Compilation files
 *.dvi

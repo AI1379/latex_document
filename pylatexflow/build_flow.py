@@ -66,7 +66,7 @@ class LaTeXBuilder:
         """
         Generate the TeX file to push variables into LaTeX environment.
         """
-        env_file = os.path.join(self.config.directory, "env.tex")
+        env_file = os.path.join(self.config.output_dir, "env.tex")
         with open(env_file, "w", encoding="utf-8") as f:
             for key, value in env.items():
                 f.write(f"\\newcommand{{\\{key}}}{{{value}}}\n")
@@ -116,6 +116,7 @@ class LaTeXBuilder:
                 build_command,
                 cwd=self.config.output_dir,
                 stdout=subprocess.DEVNULL,
+                timeout=10,
             )
             if result.returncode:
                 raise LaTeXBuildError(result.returncode)

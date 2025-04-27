@@ -56,6 +56,7 @@ def clean_temp_files(config: CleanTempFilesConfig):
     ]
     if all_file:
         temp_extensions.append(".pdf")
+        temp_extensions.append("env.tex")
 
     deleted = 0
     for dirpath, _, filenames in os.walk(root_dir):
