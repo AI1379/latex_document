@@ -1,0 +1,43 @@
+name: Build all report
+
+on:
+    push:
+        branches: [ "main" ]
+    pull_request:
+        branches: [ "main" ]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        strategy:
+            fail-fast: false
+            matrix:
+                os: [ ubuntu-latest ]
+                include:
+                    - os: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Install LaTeX Toolchain
+              run: |
+                sudo apt-get update
+                sudo apt-get install -y texlive-full
+
+            - name: Install Python environment
+              run: |
+                python3 -m venv .venv
+                source .venv/bin/activate
+                pip3 install -r ./requirements.txt
+
+            - name: Build LaTeX projects
+              run: |
+                python3 ./main.py build-all
+                python3 ./main.py clean
+
+            - name: Upload
+              uses: actions/upload-artifact@v4
+              with:
+                name: reports
+                path: output
