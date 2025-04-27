@@ -13,4 +13,4 @@ It is a simple LaTeX build system developed in python. It may be isolated one da
 - [x] Auto detect build rounds.
 - [ ] Build and create a `Makefile`.
 - [ ] Create IDE files.
-- [ ] Push variables to LaTeX project on compile time.
+- [x] Push variables to LaTeX project on compile time.

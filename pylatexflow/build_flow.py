@@ -4,6 +4,8 @@
 
 import os
 import subprocess
+import json
+from typing import Dict
 from pydantic import BaseModel, Field
 
 
@@ -24,6 +26,14 @@ class BuildFlowConfig(BaseModel):
     build_args: list = Field(
         default=["--interaction=nonstopmode", "--shell-escape"],
         description="Additional arguments for the build command",
+    )
+    environments: dict = Field(
+        default={},
+        description="A dictionary of environment variables to be passed to LaTeX",
+    )
+    env_file: str = Field(
+        default="env.json",
+        description="A json file that contains environment variables",
     )
 
     def __init__(self, **kwargs):
@@ -52,6 +62,15 @@ class LaTeXBuilder:
                     return True
             return False
 
+    def generate_environment(self, env: Dict[str, str]):
+        """
+        Generate the TeX file to push variables into LaTeX environment.
+        """
+        env_file = os.path.join(self.config.directory, "env.tex")
+        with open(env_file, "w", encoding="utf-8") as f:
+            for key, value in env.items():
+                f.write(f"\\newcommand{{\\{key}}}{{{value}}}\n")
+
     def build(self):
         self.flow = []
         if not os.path.isdir(self.config.output_dir):
@@ -63,6 +82,18 @@ class LaTeXBuilder:
         aux_file = os.path.join(self.config.output_dir, aux_name)
         prev_aux = ""
         build_bib = False
+        env = {}
+        if os.path.isfile(self.config.env_file):
+            with open(self.config.env_file) as env_json:
+                env = json.load(env_json)
+        for key, item in self.config.environments.items():
+            env[key] = item
+        print(
+            f"Environments: {', '.join([f"{key} = {item}" for key, item in env.items()])}"
+        )
+        if env:
+            self.generate_environment(env)
+
         for i in range(max_rounds):
             if build_bib:
                 build_command = [

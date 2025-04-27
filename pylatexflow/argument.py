@@ -45,7 +45,6 @@ class ArgumentParser:
                 option_strings,
                 dest,
                 nargs="*",
-                default=kwargs.get("default", {}),
                 metavar="KEY=VALUE",
                 **kwargs,
             )
