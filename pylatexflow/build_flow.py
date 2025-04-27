@@ -16,6 +16,9 @@ class BuildFlowConfig(BaseModel):
     directory: str = Field(default=".", description="Directory containing the TeX file")
     base_name: str = Field(default="main", description="Base name of the LaTeX file")
     output_dir: str = Field(default="output", description="Output directory")
+    output: str = Field(
+        default="main", description="LaTeX output file name without extension"
+    )
     build_command: str = Field(default="pdflatex", description="LaTeX build command")
     bibtex_command: str = Field(default="bibtex", description="BibTeX build command")
     build_args: list = Field(
@@ -69,8 +72,9 @@ class LaTeXBuilder:
             else:
                 build_command = [
                     self.config.build_command,
-                    tex_file,
                     f"-output-directory={self.config.output_dir}",
+                    f"-jobname={self.config.output}",
+                    tex_file,
                 ] + self.config.build_args
             print(f"Round {i+1}: Running {build_command} ...")
             self.flow.append(build_command)
@@ -97,3 +101,24 @@ class LaTeXBuilder:
         Returns the build flow as a list of commands.
         """
         return self.flow
+
+
+def build_all(directory: str, config: BuildFlowConfig):
+    """
+    Build all LaTeX project in the specified directory.
+    """
+    ignore = [".venv", ".git", ".vscode", config.output_dir, "pylatexflow"]
+    main_file_name = f"{config.base_name}.tex"
+    for subdir in os.listdir(directory):
+        if not os.path.isdir(subdir) or subdir in ignore:
+            continue
+        full_subdir = os.path.join(directory, subdir)
+        print(f"Running in subdirectory: {subdir}")
+        if not main_file_name in os.listdir(subdir):
+            print(f"Cannot find main file: {main_file_name}. Skipped")
+            continue
+
+        config.directory = os.path.abspath(full_subdir)
+        config.output = subdir
+        builder = LaTeXBuilder(config)
+        builder.build()

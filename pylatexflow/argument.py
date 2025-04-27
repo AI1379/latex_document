@@ -271,11 +271,14 @@ class ArgumentParser:
         self._push_models(self.parser, models)
         self.models = models
 
-    def parse_args(self, args: Optional[list] = None) -> BaseModel:
+    def parse_args(
+        self, args: Optional[list] = None
+    ) -> Tuple[BaseModel, Optional[str]]:
         try:
             parsed_args = self.parser.parse_args(args)
-            return self._parse_to_model(parsed_args)
-        except BaseException as e:
+            command = parsed_args.command if hasattr(parsed_args, "command") else None
+            return self._parse_to_model(parsed_args), command
+        except Exception as e:
             print(f"Error: {e}")
             self.print_help()
 
