@@ -83,6 +83,11 @@ class LaTeXBuilder:
         prev_aux = ""
         build_bib = False
         env = {}
+        if os.environ.get("IGNORE_LATEX_OUTPUT"):
+            print("Ignoring LaTeX output.")
+            latex_output = subprocess.DEVNULL
+        else:
+            latex_output = None
         if os.path.isfile(self.config.env_file):
             with open(self.config.env_file) as env_json:
                 env = json.load(env_json)
@@ -115,7 +120,7 @@ class LaTeXBuilder:
             result = subprocess.run(
                 build_command,
                 cwd=self.config.output_dir,
-                stdout=subprocess.DEVNULL,
+                stdout=latex_output,
                 timeout=10,
             )
             if result.returncode:
