@@ -31,7 +31,7 @@ jobs:
 
             - name: Build LaTeX projects
               run: |
-                python3 ./main.py build-all
+                python3 ./main.py build-all --build-command xelatex
                 python3 ./main.py clean
 
             - name: Upload
