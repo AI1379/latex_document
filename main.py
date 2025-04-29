@@ -7,6 +7,7 @@ from pylatexflow.build_flow import BuildFlowConfig, LaTeXBuilder, build_all
 from pylatexflow.clean import CleanTempFilesConfig, clean_temp_files
 from pylatexflow.create import CreateConfig, create_latex_project
 from pylatexflow.argument import ArgumentParser
+from pylatexflow.word_count import WordCountConfig, count_all_tex_files
 
 
 def main():
@@ -19,6 +20,7 @@ def main():
             "clean": CleanTempFilesConfig,
             "create": CreateConfig,
             "build-all": BuildFlowConfig,
+            "word-count": WordCountConfig,
         }
     )
     args, cmd = parser.parse_args()
@@ -31,6 +33,8 @@ def main():
         clean_temp_files(args)
     elif cmd == "create":
         create_latex_project(args)
+    elif cmd == "word-count":
+        count_all_tex_files(args)
 
 
 if __name__ == "__main__":

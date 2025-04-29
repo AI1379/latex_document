@@ -6,6 +6,7 @@ import os
 import subprocess
 import json
 from typing import Dict
+import traceback
 from pydantic import BaseModel, Field
 
 
@@ -47,6 +48,9 @@ class LaTeXBuildError(Exception):
         super().__init__(*args)
         self.return_code = return_code
 
+    def __str__(self):
+        return f"LaTeX build failed with return code {self.return_code}."
+
 
 class LaTeXBuilder:
     def __init__(self, config: BuildFlowConfig):
@@ -82,12 +86,15 @@ class LaTeXBuilder:
         aux_file = os.path.join(self.config.output_dir, aux_name)
         prev_aux = ""
         build_bib = False
+        bib_built = False
+        check_run = False
+        # TODO: Get environment from system environment variables
         env = {}
         if os.environ.get("IGNORE_LATEX_OUTPUT"):
             print("Ignoring LaTeX output.")
             latex_output = subprocess.DEVNULL
         else:
-            latex_output = None
+            latex_output = subprocess.PIPE
         if os.path.isfile(self.config.env_file):
             with open(self.config.env_file) as env_json:
                 env = json.load(env_json)
@@ -100,11 +107,13 @@ class LaTeXBuilder:
             self.generate_environment(env)
 
         for i in range(max_rounds):
+            environment = os.environ.copy()
             if build_bib:
                 build_command = [
                     self.config.bibtex_command,
-                    os.path.join(self.config.output_dir, self.config.base_name),
+                    aux_name,
                 ]
+                environment["BIBINPUTS"] = self.config.directory
             else:
                 build_command = [
                     self.config.build_command,
@@ -121,17 +130,32 @@ class LaTeXBuilder:
                 build_command,
                 cwd=self.config.output_dir,
                 stdout=latex_output,
+                stderr=latex_output,
                 timeout=10,
+                env=environment,
             )
             if result.returncode:
-                raise LaTeXBuildError(result.returncode)
+                no_cite_msg = "I found no \\citation commands"
+                if no_cite_msg not in result.stdout.decode("utf-8"):
+                    print(f"Error in LaTeX build: {result.returncode}")
+                    print(f"stderr: {result.stderr.decode('utf-8')}")
+                    print(f"stdout: {result.stdout.decode('utf-8')}")
+                    raise LaTeXBuildError(result.returncode)
+                else:
+                    print(f"No \\citation commands found. Skipped BibTeX Error.")
 
             with open(aux_file, "r", encoding="utf-8") as f:
                 aux = f.read()
-                if aux == prev_aux:
+                if aux == prev_aux and check_run:
                     break
+                elif aux == prev_aux and not build_bib:
+                    check_run = True
+                elif aux != prev_aux and check_run:
+                    check_run = False
                 prev_aux = aux
-            build_bib = self._check_bib(aux_file)
+            if build_bib and not bib_built:
+                bib_built = True
+            build_bib = self._check_bib(aux_file) and not bib_built
 
     def get_flow(self):
         """
@@ -147,15 +171,21 @@ def build_all(directory: str, config: BuildFlowConfig):
     ignore = [".venv", ".git", ".vscode", config.output_dir, "pylatexflow"]
     main_file_name = f"{config.base_name}.tex"
     for subdir in os.listdir(directory):
-        if not os.path.isdir(subdir) or subdir in ignore:
-            continue
-        full_subdir = os.path.join(directory, subdir)
-        print(f"Running in subdirectory: {subdir}")
-        if not main_file_name in os.listdir(subdir):
-            print(f"Cannot find main file: {main_file_name}. Skipped")
-            continue
+        try:
+            if not os.path.isdir(subdir) or subdir in ignore:
+                continue
+            full_subdir = os.path.join(directory, subdir)
+            print(f"Running in subdirectory: {subdir}")
+            if not main_file_name in os.listdir(subdir):
+                print(f"Cannot find main file: {main_file_name}. Skipped")
+                continue
 
-        config.directory = os.path.abspath(full_subdir)
-        config.output = subdir
-        builder = LaTeXBuilder(config)
-        builder.build()
+            config.directory = os.path.abspath(full_subdir)
+            config.output = subdir
+            builder = LaTeXBuilder(config)
+            builder.build()
+        except Exception as e:
+            print(f"Error in {subdir}.")
+            traceback.print_exc()
+            print(f"Skipping {subdir}.")
+            continue
