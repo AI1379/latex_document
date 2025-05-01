@@ -39,6 +39,18 @@
   R_n = S - S_n = \sum_{k=n+1}^{\infty} a_k.
 \end{equation*}
 
+接下来，有定理：
+
+\begin{theorem}[级数的结合律]\label{thm:infinite-series-associativity}
+  设级数 $\sum_{n=1}^{\infty} x_n$ 收敛，则任意添加括号后所得级数仍收敛到原级数的和。
+\end{theorem}
+
+\begin{proof}
+  设添加括号后每一部分为 $y_n$ ，设 $\{x_n\},\ \{y_n\}$ 的部分和分别为 $S_n$ 和 $T_n$。
+  则显然 $T_n$ 是 $S_n$ 的一个子列。
+  由 Bolzano-Weierstrass 定理，$T_n$ 收敛到 $S$。
+\end{proof}
+
 \subsection{正项级数的收敛性}\label{subsec:positive-series-convergence}
 
 \textbf{正项级数}是指所有项均为正数的级数，即 $\forall n \in \mathbb{N}^+, a_n \geq 0$。
@@ -276,3 +288,134 @@
 \subsection{任意项级数的敛散性}\label{subsec:arbitrary-series-convergence}
 
 任意项级数是指项的符号不一定相同的级数。
+在讨论一般的任意项级数前，先讨论\textbf{交错级数}。
+
+\begin{definition}[交错级数]\label{def:alternating-series}
+  若级数 $\sum_{n=1}^{\infty} a_n = \sum_{n=1}^{\infty} (-1)^n u_n$ ，其中 $u_n \geq 0$，则称其为\textbf{交错级数}。
+\end{definition}
+
+进一步，有 \textbf{Leibniz 级数}：
+
+\begin{definition}[Leibniz 级数]\label{def:leibniz-series}
+  设 $\{u_n\}_{n=1}^{\infty}$ 是一个正项级数。
+  如果 $u_n$ 单调递减且 $\lim_{n \to \infty} u_n = 0$，则称 $\sum_{n=1}^{\infty} (-1)^n u_n$ 为 Leibniz 级数。
+\end{definition}
+
+对于 Leibniz 级数，有 \textbf{Leibniz 判别法}：
+
+\begin{theorem}[Leibniz 判别法]\label{thm:leibniz-test}
+  Leibniz 级数必定收敛
+\end{theorem}
+
+\begin{proof}
+  设 $S_n = \sum_{k=0}^{n} (-1)^k u_k$，则有：
+  \begin{align*}
+    S_n &= \sum_{k=0}^{n} (-1)^k u_k \\
+    &= u_0 - u_1 + u_2 - u_3 + \cdots + (-1)^n u_n \\
+    &= u_0 - (u_1 - u_2) - (u_3 - u_4) + \cdots \tag*{(*)}\\
+    &= (u_0 - u_1) + (u_2 - u_3) + \cdots \tag*{(**)}
+  \end{align*}
+  由单调性和 $(*)$ 可知，$S_n$ 是单调递减的；又由 $(**)$ 可知，$S_n$ 是有界的。
+  从而 $S_n$ 收敛。
+\end{proof}
+
+为了判定更一般的情况，有 \textbf{Dirichlet-Abel 判别法}。
+首先有引理：
+
+\begin{lemma}[Abel 变换]\label{lem:abel-transformation}
+  设 $\{a_n\},\ \{b_n\}$ 是两个数列，$A_n = \sum_{k=1}^{n} a_k$，$B_n = \sum_{k=1}^{n} b_k$。
+  则有：
+  \begin{equation*}
+    \sum_{k=1}^{n} a_k b_k = A_n b_n - \sum_{k=1}^{n-1} A_k (b_{k+1} - b_k).
+  \end{equation*}
+\end{lemma}
+
+也叫\textbf{分部求和公式}。证明易证。
+
+由 Abel 变换，有引理：
+
+\begin{lemma}[Abel 引理]\label{lem:abel-lemma}
+  令：
+  \begin{enumerate}
+    \item $\{a_k\}$ 单调
+    \item $\{B_k = \sum_{k=1}^n b_k\}$ 有界 $M$
+  \end{enumerate}
+  则：
+  \begin{equation*}
+    \left|\ \sum_{k=1}^p a_k b_k\ \right| \leq M (|a_1| + 2|a_p|)
+  \end{equation*}
+\end{lemma}
+
+\begin{proof}
+  由 Abel 变换和单调性，有：
+  \begin{align*}
+    \left|\ \sum_{k=1}^p a_k b_k \ \right|
+    &\leq |\ a_p B_p \ | + \sum_{k=1}^{p-1} |B_k| |a_{k+1} - a_k| \\
+    &\leq M \left(\ |a_p| + \sum_{k=1}^{p-1} |a_{k+1} - a_k| \ \right) \\
+    &= M \left(\ |a_p| + \left|\ \sum_{k=1}^{p-1} (a_{k+1} - a_k) \ \right| \ \right) \\
+    &= M \left(\ |a_p| + |a_p - a_1|\ \right) \\
+    &\leq M \left(\ |a_1| + 2|a_p|\ \right) \\
+  \end{align*}
+\end{proof}
+
+接下来，有\textbf{级数的 Dirichlet-Abel 判别法}：
+
+\begin{theorem}[级数的 D-A 判别法]\label{thm:dirichlet-abel-test}
+  若：
+  \begin{enumerate}
+    \item \textbf{(Abel 条件)} $\{a_n\}$ 单调有界， $\sum_{n=1}^{\infty} b_n$ 收敛；
+    \item \textbf{(Dirichlet 条件)} $\{a_n\}$ 单调趋向于0， $\sum_{k=1}^{n} b_k$ 有界。
+  \end{enumerate}
+  中任一成立，则级数 $\sum_{n=1}^{\infty} a_n b_n$ 收敛。
+\end{theorem}
+
+\begin{proof}
+  若 Abel 条件成立，则有： $|a_n| \leq M$ 。
+  又有： $\sum_{n=1}^{\infty} b_n$ 收敛，由 Cauchy 收敛准则， $\forall \varepsilon > 0,\ \exists N \in \mathbb{N}^+$，使得对于任意 $m, n > N$，都有：
+  \begin{equation*}
+    \left| \sum_{k=n+1}^{m} b_k \right| < \varepsilon.
+  \end{equation*}
+  由 Abel 引理，有：
+  \begin{equation*}
+    \left|\ \sum_{k=n+1}^{m} a_k b_k \ \right|
+    < \varepsilon \left( |a_{n+1}| + 2 |a_m| \right) 
+    < 3M \varepsilon.
+  \end{equation*}
+  从而收敛。
+
+  若 Dirichlet 条件成立，则有： $\lim_{n \to \infty} a_n = 0$。
+  从而， $\forall \varepsilon > 0,\ \exists N \in \mathbb{N}^+$，使得对于任意 $n > N$，都有：
+  \begin{equation*}
+    |a_n| < \varepsilon.
+  \end{equation*}
+  设 $B_n = \sum_{k=1}^{n} b_k$ 有界 $M$。
+  则有：
+  \begin{equation*}
+    \left|\ \sum_{k=n+1}^{m} b_k \ \right| 
+    = \left| B_m - B_n \right|
+    < 2M.
+  \end{equation*}
+  由 Abel 引理，得：
+  \begin{equation*}
+    \left|\ \sum_{k=n+1}^{m} a_k b_k \ \right|
+    < 2M \left( |a_{n+1}| + 2 |a_m| \right) 
+    < 6M \varepsilon.
+  \end{equation*}
+  从而收敛。
+
+\end{proof}
+
+\subsection{绝对收敛于条件收敛}\label{subsec:absolute-convergence}
+
+由于正项级数的敛散性相对容易判断，因此自然地可以想到可以利用正项级数的敛散性来判断任意项级数的敛散性。
+从而有\textbf{绝对收敛}的概念：
+
+\begin{definition}[绝对收敛]\label{def:absolute-convergence}
+  设 $\sum_{n=1}^{\infty} a_n$ 是一个收敛级数，称其为\textbf{绝对收敛}，如果 $\sum_{n=1}^{\infty} |a_n|$ 收敛。
+  否则，称其为\textbf{条件收敛}。
+\end{definition}
+
+绝对收敛的级数一定收敛，但条件收敛的级数不一定收敛。
+这是显然的。
+
+接下来，考虑级数的加法交换律。
