@@ -1,2 +1,278 @@
 \section{无穷级数}\label{sec:infinite-series}
 
+\subsection{无穷级数的定义}\label{subsec:infinite-series-definition}
+
+\begin{definition}[无穷级数的定义]
+  设 $\{a_n\}_{n=1}^{\infty}$ 是一个数列，称 $\sum_{n=1}^{\infty} a_n$ 为无穷级数，或简称为级数。
+  级数的部分和定义为
+  \begin{equation*}
+    S_n = \sum_{k=1}^{n} a_k = a_1 + a_2 + \cdots + a_n.
+  \end{equation*}
+  如果 $\lim_{n \to \infty} S_n = S$ 存在，则称级数收敛，$S$ 称为级数的和；
+  如果不存在，则称级数发散。
+\end{definition}
+
+从定义中容易得到一个推论：
+
+\begin{lemma}\label{lem:infinite-series-convergence}
+  设 $\{a_n\}_{n=1}^{\infty}$ 是一个数列，$S_n = \sum_{k=1}^{n} a_k$。
+  如果 $\lim_{n \to \infty} S_n = S$ 存在，则 $\lim_{n \to \infty} a_n = 0$。
+\end{lemma}
+
+从极限的线性性，容易得到\textbf{无穷级数的线性性}：
+
+\begin{property}[无穷级数的线性性]\label{prop:infinite-series-linearity}
+  设 $\{a_n\}_{n=1}^{\infty}$ 和 $\{b_n\}_{n=1}^{\infty}$ 是两个数列，$S_n = \sum_{k=1}^{n} a_k$，$T_n = \sum_{k=1}^{n} b_k$。
+  如果 $\lim_{n \to \infty} S_n = S$ 和 $\lim_{n \to \infty} T_n = T$ 存在，则
+  \begin{equation*}
+    \lim_{n \to \infty} (S_n + T_n) = S + T,
+  \end{equation*}
+  \begin{equation*}
+    \lim_{n \to \infty} (c S_n) = c S,
+  \end{equation*}
+  对任意常数 $c$ 成立。
+\end{property}
+
+为方便讨论，定义\textbf{余项}为
+
+\begin{equation*}
+  R_n = S - S_n = \sum_{k=n+1}^{\infty} a_k.
+\end{equation*}
+
+\subsection{正项级数的收敛性}\label{subsec:positive-series-convergence}
+
+\textbf{正项级数}是指所有项均为正数的级数，即 $\forall n \in \mathbb{N}^+, a_n \geq 0$。
+若不等号严格成立，则称为\textbf{严格正项级数}。
+
+显然有结论：
+
+\begin{lemma}\label{lem:positive-series-convergence}
+  设 $\{a_n\}_{n=1}^{\infty}$ 是一个正项级数，$S_n = \sum_{k=1}^{n} a_k$。
+  则 $S_n$ 收敛当且仅当 $S_n$ 有上界。
+\end{lemma}
+
+先讨论两个常见的正项级数：\textbf{几何级数}和\textbf{p-级数}。
+
+几何级数是指形如 $\sum_{n=0}^{\infty} ar^n$ 的级数，其中 $a$ 是常数，$r$ 是常数。
+显然，几何级数的收敛性与 $r$ 的大小有关：
+
+\begin{enumerate}
+  \item 如果 $|r| < 1$，则几何级数收敛，且其和为 $\frac{a}{1 - r}$；
+  \item 如果 $|r| \geq 1$，则几何级数发散。
+\end{enumerate}
+
+然后讨论另一个级数\textbf{p-级数}。
+
+\begin{definition}[p-级数]\label{def:p-series}
+  设 $p$ 是一个实数，$p > 0$，则称 $\sum_{n=1}^{\infty} \frac{1}{n^p}$ 为 p-级数。
+\end{definition}
+
+它的敛散性与 $p$ 的大小有关：
+
+\begin{theorem}[p-级数的敛散性]\label{thm:p-series-convergence}
+  设 $p$ 是一个实数，$p > 0$，则：
+  \begin{enumerate}
+    \item 如果 $p \leq 1$，则 $\sum_{n=1}^{\infty} \frac{1}{n^p}$ 发散；
+    \item 如果 $p > 1$，则 $\sum_{n=1}^{\infty} \frac{1}{n^p}$ 收敛。
+  \end{enumerate}
+
+\end{theorem}
+
+\begin{proof}
+  设 $S_n = \sum_{k=1}^{n} \frac{1}{k^p}$。
+  分类讨论。
+
+  当 $p > 1$ 时，按 $\frac{1}{2^p}$ 分组，得到：
+
+  \begin{equation*}
+    \begin{aligned}
+      \sum_{n=1}^{\infty} \frac{1}{n^p}
+      &= \frac{1}{1^p}
+      + \left(\frac{1}{2^p} + \frac{1}{3^p}\right)
+      + \left(\frac{1}{4^p} + \frac{1}{5^p} + \frac{1}{6^p} + \frac{1}{7^p}\right)
+      + \cdots \\
+      &< \frac{1}{1^p} + \frac{2}{2^p} + \frac{4}{4^p} + \cdots \\
+      &= \sum_{k=0}^{\infty} \left(\frac{1}{2^{p-1}}\right)^k
+    \end{aligned}
+  \end{equation*}
+
+  从而 $S_n$ 有界，从而收敛。
+
+  当 $p \leq 1$ 时，按 $\frac{1}{2^p+1}$ 分组，得到：
+
+  \begin{equation*}
+    \begin{aligned}
+      \sum_{n=1}^{\infty} \frac{1}{n^p}
+      &= \frac{1}{1^p} + \frac{1}{2^p}
+      + \left(\frac{1}{3^p} + \frac{1}{4^p}\right)
+      + \left(\frac{1}{5^p} + \frac{1}{6^p} + \frac{1}{7^p} + \frac{1}{8^p}\right)
+      + \cdots \\
+      &> \frac{1}{1^p} + \frac{1}{2^p} + \frac{2}{3^p} + \frac{4}{5^p} + \cdots \\
+      &> \frac{1}{1} + \frac{1}{2} + \frac{2}{3} + \frac{4}{5} + \cdots \\
+      &> 1 + \frac{1}{2} + \frac{1}{2} + \frac{1}{2} + \cdots \\
+      &= \infty
+    \end{aligned}
+  \end{equation*}
+
+  从而发散。
+
+\end{proof}
+
+接下来讨论一般的正项级数的敛散性判定。
+首先，作为对极限最本质的刻画，有 Cauchy 收敛准则：
+
+\begin{theorem}[Cauchy 收敛准则]\label{thm:cauchy-convergence}
+  设 $\{a_n\}_{n=1}^{\infty}$ 是一个正项级数，$S_n = \sum_{k=1}^{n} a_k$。
+  则 $S_n$ 收敛当且仅当对于任意 $\varepsilon > 0$，存在正整数 $N$，使得对于任意 $m, n > N$，都有
+  \begin{equation*}
+    S_m - S_n < \varepsilon.
+  \end{equation*}
+\end{theorem}
+
+此外，有\textbf{比较判别法}：
+
+\begin{theorem}[比较判别法]\label{thm:comparison-test}
+  设 $\{a_n\}_{n=1}^{\infty}$ 和 $\{b_n\}_{n=1}^{\infty}$ 是两个正项级数，$S_n = \sum_{k=1}^{n} a_k$，$T_n = \sum_{k=1}^{n} b_k$。
+  如果存在正整数 $N$，使得对于任意 $n > N$，都有 $a_n \leq b_n$，则
+  \begin{enumerate}
+    \item 如果 $T_n$ 收敛，则 $S_n$ 收敛；
+    \item 如果 $S_n$ 发散，则 $T_n$ 发散。
+  \end{enumerate}
+  此外，有\textbf{极限形式的比较判别法}：
+  令 $\lim_{n \to \infty} \frac{a_n}{b_n} = L$，则
+  \begin{enumerate}
+    \item 若 $0 \leq L < \infty$ ，则 $S_n$ 和 $T_n$ 同收敛
+    \item 若 $0 < L \leq \infty$，则 $S_n$ 和 $T_n$ 同发散。
+  \end{enumerate}
+\end{theorem}
+
+那么自然的可以想到：利用一个容易判定敛散性的级数来判定另一个级数的敛散性。
+容易想到一个容易判定敛散性的级数是几何级数。
+从而，有 \textbf{Cauchy 比较判别法} 和 \textbf{d'Alembert 判别法}：
+
+\begin{theorem}[Cauchy 比较判别法]\label{thm:cauchy-comparison-test}
+  设 $\{a_n\}_{n=1}^{\infty}$ 是一个正项级数，$S_n = \sum_{k=1}^{n} a_k$。
+  $r = \limsup_{n \to \infty} \sqrt[n]{a_n}$。
+  则有：
+
+  \begin{enumerate}
+    \item 若 $r < 1$，则 $S_n$ 收敛；
+    \item 若 $r > 1$，则 $S_n$ 发散；
+    \item 若 $r = 1$，则 $S_n$ 的敛散性无法用 Cauchy 比较判别法判定。
+  \end{enumerate}
+
+\end{theorem}
+
+\begin{proof}
+  当 $r < 1$ 时，取 $q$ 使得 $r < q < 1$，则存在正整数 $N$，使得对于任意 $n > N$，都有
+
+  \begin{equation*}
+    a_n < q^n.
+  \end{equation*}
+
+  由比较判别法可知，$S_n$ 收敛。
+\end{proof}
+
+\begin{theorem}[d'Alembert 判别法]\label{thm:d-alembert-comparison-test}
+  设 $\{a_n\}_{n=1}^{\infty}$ 是一个正项级数，$S_n = \sum_{k=1}^{n} a_k$。
+  则有：
+  \begin{enumerate}
+    \item 若 $\limsup_{n \to \infty} \frac{a_{n+1}}{a_n} = \overline{r} < 1$，则 $S_n$ 收敛；
+    \item 若 $\liminf_{n \to \infty} \frac{a_{n+1}}{a_n} = \underline{r} > 1$，则 $S_n$ 发散；
+    \item 若 $\overline{r} \geq 1$ 或 $\underline{r} \leq 1$，则 $S_n$ 的敛散性无法用 d'Alembert 判别法判定。
+  \end{enumerate}
+\end{theorem}
+
+证明包含在这个引理中：
+
+\begin{lemma}
+  设 $\{a_n\}_{n=1}^{\infty}$ 是一个正项级数，则：
+  \begin{equation*}
+    \liminf_{n \to \infty} \frac{a_{n+1}}{a_n}
+    \leq \liminf_{n \to \infty} \sqrt[n]{a_n}
+    \leq \limsup_{n \to \infty} \sqrt[n]{a_n}
+    \leq \limsup_{n \to \infty} \frac{a_{n+1}}{a_n} .
+  \end{equation*}
+\end{lemma}
+
+\begin{proof}
+  设
+  \begin{equation*}
+    \overline{r} = \limsup_{n \to \infty} \frac{a_{n+1}}{a_n}
+  \end{equation*}
+  则：$\forall \varepsilon > 0$，存在正整数 $N$，使得对于任意 $n > N$，都有：
+  \begin{equation*}
+    \frac{a_{n+1}}{a_n} < \overline{r} + \varepsilon.
+  \end{equation*}
+  从而：
+  \begin{equation*}
+    a_n < (\overline{r} + \varepsilon)^{n-N-1} \cdot a_{N+1}
+  \end{equation*}
+  从而：
+  \begin{equation*}
+    \limsup_{n \to \infty} \sqrt[n]{a_n}
+    \leq \limsup_{n \to \infty} \sqrt[n]{(\overline{r} + \varepsilon)^{n-N-1} \cdot a_{N+1}}
+    = \overline{r} + \varepsilon.
+  \end{equation*}
+  由 $\varepsilon$ 任意小，得：
+  \begin{equation*}
+    \limsup_{n \to \infty} \sqrt[n]{a_n} \leq \overline{r}.
+  \end{equation*}
+  另一边的证明同理。
+\end{proof}
+
+然而，d'Alembert 判别法和 Cauchy 判别法并不总是适用的。
+例如，对于 \textbf{p-级数}：$\sum_{n=1}^{\infty} \frac{1}{n^p}$，两种判别法都无法使用。
+因此，给出一些其他的判别法：
+
+\begin{theorem}[Raabe 判别法]\label{thm:raabe-test}
+  设 $\{a_n\}_{n=1}^{\infty}$ 是一个正项级数，$S_n = \sum_{k=1}^{n} a_k$。
+  令
+  \begin{equation*}
+    r = \lim_{n \to \infty} n \left( \frac{a_n}{a_{n+1}} - 1\right).
+  \end{equation*}
+  则有：
+  \begin{enumerate}
+    \item 若 $r > 1$，则 $S_n$ 收敛；
+    \item 若 $r < 1$，则 $S_n$ 发散；
+    \item 若 $r = 1$，则 $S_n$ 的敛散性无法用 Raabe 判别法判定。
+  \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+  令 $s>t>1$ ，定义辅助函数 $f(x) = 1 + sx - (1 + x)^t$ 。
+  由 $f(0) = 0$ 和 $f'(0) = s - t > 0$ 可知，$\exists \delta > 0, \forall x \in (0, \delta)$，都有 $f(x) > 0$。
+
+  $r > 1$ 时，取 $r > s > t > 1$ ，则有： $\exists N > 0$，使得对于任意 $n > N$，都有：
+
+  \begin{equation*}
+    \frac{a_n}{a_{n+1}} > 1 + \frac{s}{n} > \left(1 + \frac{1}{n}\right)^t = \frac{(n+1)^t}{n^t}
+  \end{equation*}
+
+  从而 $\{n^t a_n\}$ 从某一项起单调递减，从而有界。设有上界 $A$ ，从而有 $a_n \leq \frac{A}{n^t}$。
+
+  又有 $t > 1$ ，所以 $\sum_{n=1}^{\infty} \frac{1}{n^t}$ 收敛。
+  从而原级数 $\sum_{n=1}^{\infty} a_n$ 收敛。
+
+  若 $r < 1$，则取 $r < s < t < 1$，同理可得：原级数发散。
+
+\end{proof}
+
+接下来，考虑到求和与定积分的关系，有\textbf{积分判别法}：
+
+\begin{theorem}[积分判别法]\label{thm:integral-test}
+  设 $\{u_n\}_{n=1}^{\infty}$ 是一个正项级数，$S_n = \sum_{k=1}^{n} u_k$。
+  函数 $f(x)$ 定义于 $[a, +\infty)$ 且 $f(x) \geq 0$ ，且在任意有限区间上 Riemann 可积。
+  取一单调增加趋向于 $+\infty$ 的数列 $\{a_n\}$ ，令：$$\int_{a_n}^{a_{n+1}} f(x) \mathrm{d}x = u_n$$
+
+  则有：反常积分 $\int_{a}^{+\infty} f(x) \mathrm{d}x$ 收敛当且仅当级数 $\sum_{n=1}^{\infty} u_n$ 收敛。
+
+  特别地，若 $f(x)$ 在 $[a, +\infty)$ 上单调递减，取 $a_n = n$，则有：
+  反常积分 $\int_{a}^{+\infty} f(x) \mathrm{d}x$ 收敛当且仅当级数 $\sum_{n=[a]+1}^{\infty} f(n)$ 收敛。
+\end{theorem}
+
+利用积分判别法可以容易地得到 p-级数的敛散性。
+
+\subsection{任意项级数的敛散性}\label{subsec:arbitrary-series-convergence}
+
+任意项级数是指项的符号不一定相同的级数。
