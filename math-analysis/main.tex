@@ -1,0 +1,42 @@
+% Preamble
+\documentclass[11pt]{article}
+
+% Packages
+\usepackage[
+  left=0.8in,
+  right=0.8in,
+  top=0.8in,
+  bottom=0.8in
+]{geometry}
+\usepackage[UTF8]{ctex}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
+\newtheorem{definition}{定义}
+\newtheorem{property}{性质}
+\newtheorem{lemma}{引理}
+\newtheorem{theorem}{定理}
+
+\numberwithin{equation}{subsection}
+\numberwithin{theorem}{subsection}
+\numberwithin{definition}{subsection}
+
+\title{数学分析笔记}
+\author{Renatus Madrigal}
+\date{\today}
+
+% Document
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\input{chapter1.tex}
+\input{chapter2.tex}
+\input{chapter3.tex}
+\input{chapter4.tex}
+\input{chapter5.tex}
+
+\end{document}
