@@ -378,7 +378,7 @@
   由 Abel 引理，有：
   \begin{equation*}
     \left|\ \sum_{k=n+1}^{m} a_k b_k \ \right|
-    < \varepsilon \left( |a_{n+1}| + 2 |a_m| \right) 
+    < \varepsilon \left( |a_{n+1}| + 2 |a_m| \right)
     < 3M \varepsilon.
   \end{equation*}
   从而收敛。
@@ -391,21 +391,21 @@
   设 $B_n = \sum_{k=1}^{n} b_k$ 有界 $M$。
   则有：
   \begin{equation*}
-    \left|\ \sum_{k=n+1}^{m} b_k \ \right| 
+    \left|\ \sum_{k=n+1}^{m} b_k \ \right|
     = \left| B_m - B_n \right|
     < 2M.
   \end{equation*}
   由 Abel 引理，得：
   \begin{equation*}
     \left|\ \sum_{k=n+1}^{m} a_k b_k \ \right|
-    < 2M \left( |a_{n+1}| + 2 |a_m| \right) 
+    < 2M \left( |a_{n+1}| + 2 |a_m| \right)
     < 6M \varepsilon.
   \end{equation*}
   从而收敛。
 
 \end{proof}
 
-\subsection{绝对收敛于条件收敛}\label{subsec:absolute-convergence}
+\subsection{绝对收敛与条件收敛}\label{subsec:absolute-convergence}
 
 由于正项级数的敛散性相对容易判断，因此自然地可以想到可以利用正项级数的敛散性来判断任意项级数的敛散性。
 从而有\textbf{绝对收敛}的概念：
@@ -419,3 +419,114 @@
 这是显然的。
 
 接下来，考虑级数的加法交换律。
+我们将一个级数经过重排后得到的级数称作\textbf{更序级数}。
+自然地，我们将要考虑：一个更序级数的和是否与原级数的和相等。
+
+首先引入记号：
+
+\begin{equation*}
+  x_n^+ = \max\{x_n, 0\},\quad x_n^- = \max\{-x_n, 0\}
+\end{equation*}
+
+那么，若 $\sum_{n=1}^{\infty} a_n$ 收敛，则显然有： $\sum_{n=1}^{\infty} a_n = \sum_{n=1}^{\infty} a_n^+ - \sum_{n=1}^{\infty} a_n^-$。
+
+从而有定理：
+
+\begin{theorem}
+  若 $\sum_{n=1}^{\infty} a_n$ 绝对收敛，则 $\sum_{n=1}^{\infty} a_n^+$ 和 $\sum_{n=1}^{\infty} a_n^-$ 都收敛；
+  若条件收敛，则 $\sum_{n=1}^{\infty} a_n^+$ 和 $\sum_{n=1}^{\infty} a_n^-$ 都发散到 $+\infty$。
+\end{theorem}
+
+\begin{proof}
+  先证绝对收敛的情况。
+
+  显然有： $0 \leq a_n^+ \leq |a_n|$，$0 \leq a_n^- \leq |a_n|$。
+  由绝对收敛，立刻有 $\sum_{n=1}^{\infty} a_n^+$ 与 $\sum_{n=1}^{\infty} a_n^-$ 收敛。
+
+  再证条件收敛的情况。考虑反证。
+
+  不妨假设 $\sum_{n=1}^{\infty} a_n^+$ 收敛，那么由：
+  $$\sum_{n=1}^{\infty} a_n = \sum_{n=1}^{\infty} a_n^+ - \sum_{n=1}^{\infty} a_n^-$$
+  有：$\sum_{n=1}^{\infty} a_n^-$ 也收敛。
+  从而 $\sum_{n=1}^{\infty} |a_n|$ 收敛。
+  这与条件收敛矛盾。
+\end{proof}
+
+接着，可以证明如下关于更序级数的定理：
+
+\begin{theorem}\label{thm:rearrangement-theorem}
+  设 $\sum_{n=1}^{\infty} a_n$ 是一个绝对收敛的级数，$S = \sum_{n=1}^{\infty} a_n$。
+  则任意更序级数 $\sum_{n=1}^{\infty} b_n$ 都收敛到 $S$。
+\end{theorem}
+
+\begin{proof}
+  首先假设 $a_n$ 是一个正项级数。
+
+  此时有： $\sum_{k=1}^{n} b_k \leq \sum_{n=1}^{\infty} a_n$ ，有界，从而收敛。
+  从而有： $\sum_{n=1}^{\infty} b_n \leq \sum_{n=1}^{\infty} a_n$ 。
+  此时又可以将 $\sum_{n=1}^{\infty} a_n$ 看作是 $\sum_{n=1}^{\infty} b_n$ 的更序级数，
+  从而有： $\sum_{n=1}^{\infty} b_n \geq \sum_{n=1}^{\infty} a_n$ 。
+  因此， $\sum_{n=1}^{\infty} b_n = \sum_{n=1}^{\infty} a_n$ 。
+
+  对于任意项级数，考虑 $\sum_{n=1}^{\infty} a_n = \sum_{n=1}^{\infty} a_n^+ - \sum_{n=1}^{\infty} a_n^-$。
+  由上面的定理， $\sum_{n=1}^{\infty} a_n^+$ 和 $\sum_{n=1}^{\infty} a_n^-$ 都收敛。
+  从而 $\sum_{n=1}^{\infty} b_n^+$ 和 $\sum_{n=1}^{\infty} b_n^-$ 都收敛。
+  从而 $\sum_{n=1}^{\infty} b_n = \sum_{n=1}^{\infty} b_n^+ - \sum_{n=1}^{\infty} b_n^-$ 收敛。
+\end{proof}
+
+以及关于条件收敛级数的定理：
+
+\begin{theorem}[Riemann]\label{thm:riemann-rearrangement-theorem}
+  设 $\sum_{n=1}^{\infty} a_n$ 是一个条件收敛的级数，$S = \sum_{n=1}^{\infty} a_n$。
+  则存在一个更序级数 $\sum_{n=1}^{\infty} b_n$，使得 $\sum_{n=1}^{\infty} b_n$ 收敛到任意 $S' \in \mathbb{R} \cup \{\pm\infty \}$。
+\end{theorem}
+
+\begin{proof}
+  先考虑 $S' \in \mathbb{R}$ 的情况。
+
+  考虑 $\sum_{n=1}^{\infty} a_n = \sum_{n=1}^{\infty} a_n^+ - \sum_{n=1}^{\infty} a_n^-$。
+  由上面的定理， $\sum_{n=1}^{\infty} a_n^+$ 和 $\sum_{n=1}^{\infty} a_n^-$ 都发散到 $+\infty$。
+
+  那么，必然存在一个最小的 $m_1$，使得 $$\sum_{n=1}^{m_1} a_n^+ > S'$$
+  且存在一个最小的 $n_1$ ，使得 $$\sum_{n=1}^{m_1} a_n^+ - \sum_{n=1}^{n_1} a_n^- < S'$$
+  这样的操作总是可以进行的，因此总是可以得到 $a_n$ 的一个更序级数，使得它的部分和满足：
+  $$S'_n \in (S' - x_{n_k}^-,\ S' + x_{m_k}^+)$$
+
+  又： $\sum_{n=1}^{\infty} a_n$ 收敛，从而有：
+  $$\lim_{n\to \infty} a_n^+ = \lim_{n\to \infty} a_n^- = 0$$
+  从而有： $\sum_{n=1}^{\infty} b_n = S'$。
+
+  然后考虑 $S' = \pm \infty$ 的情况。显然只需考虑 $S' = +\infty$ 的情况。
+
+  由于： $$\lim_{n\to \infty} a_n^+ = \lim_{n\to \infty} a_n^- = 0$$
+  从而 $\{a_n^-\}$ 有界。
+  令 $M = \lceil \sup \{a_n^-\} \rceil$ ，则：
+  $$\exists\ n_k,\ \mathrm{s.t.}\ \sum_{n=1}^{n_k} a_n^+ > k + M \Rightarrow \sum_{n=1}^{n_k} a_n^+ - a_k^- > k$$
+  从而可以构造更序级数 $\sum_{n=1}^{\infty} b_n$ ，使得它满足：
+  $$\forall\ G>0,\ \exists\ N > 0,\ \forall\ n > N,\ \sum_{k=1}^{n} b_n > G$$
+  从而更序级数发散。
+\end{proof}
+
+最后讨论级数的乘法。
+
+首先定义\textbf{ Cauchy 乘积}：
+
+\begin{definition}[Cauchy 乘积]\label{def:cauchy-product}
+  设 $\sum_{n=1}^{\infty} a_n$ 和 $\sum_{n=1}^{\infty} b_n$ 是两个级数，$S = \sum_{n=1}^{\infty} a_n$，$T = \sum_{n=1}^{\infty} b_n$。
+  则称：
+  \begin{equation*}
+    \prod_{n=1}^{\infty} (1 + a_n) = \prod_{n=1}^{\infty} (1 + b_n) = \prod_{n=1}^{\infty} (1 + c_n)
+  \end{equation*}
+  为 Cauchy 乘积。
+  其中：$c_n = \sum_{k=0}^{n} a_k b_{n-k}$。
+\end{definition}
+
+% TODO: 关于级数的乘积的部分
+
+\subsection{无穷乘积}\label{subsec:infinite-product}
+
+% TODO: 关于无穷乘积的部分
+
+\subsection{函数项级数}\label{subsec:function-series}
+
+% TODO: 关于函数项级数的部分
